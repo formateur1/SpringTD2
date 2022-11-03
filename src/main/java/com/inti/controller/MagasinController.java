@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inti.model.Magasin;
+import com.inti.model.Produit;
 import com.inti.repository.IMagasinRepository;
+import com.inti.repository.IProduitRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +26,9 @@ public class MagasinController {
 	
 	@Autowired
 	IMagasinRepository imr;
+	
+	@Autowired
+	IProduitRepository ipr;
 	
 	@GetMapping("magasins")
 	public List<Magasin> getMagasins()
@@ -87,6 +92,55 @@ public class MagasinController {
 				.orElseGet(() -> {
 					return imr.save(nouveauMagasin);
 				});		
+	}
+	
+	@PostMapping("associerProduits/{id}")
+	public boolean associerProduitsToMagasin(@PathVariable int id)
+	{
+		try {
+			Magasin magasin = imr.findById(id).get();
+			
+			List<Produit> listeProduit = ipr.findAll();
+			
+			magasin.setListeProduit(listeProduit);
+			
+			imr.save(magasin);
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;		
+	}
+	
+	@PostMapping("associerProduit/{id}")
+	public boolean associerProduitToMagasin(@PathVariable int id, @RequestBody Produit produit)
+	{
+		try {
+			Magasin magasin = imr.findById(id).get();
+			
+			List<Produit> listeProduit = ipr.findAll();
+			listeProduit.add(produit);
+			
+			magasin.setListeProduit(listeProduit);
+			
+			imr.save(magasin);
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;		
+	}
+	
+	@GetMapping("byName/{nom}")
+	public Magasin getMagasinByNom(@PathVariable String nom)
+	{
+		return imr.findByNom(nom);
 	}
 
 }

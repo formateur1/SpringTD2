@@ -7,5 +7,8 @@ import com.inti.model.Magasin;
 
 @Repository
 public interface IMagasinRepository extends JpaRepository<Magasin, Integer> {
+	
+	// select * from magasin where nom = nom;
+	Magasin findByNom(String nom);
 
 }

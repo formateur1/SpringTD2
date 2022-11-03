@@ -10,6 +10,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -20,6 +24,9 @@ import lombok.ToString;
 @Entity
 @Table(name = "ProduitSpring")
 @Data @NoArgsConstructor @AllArgsConstructor
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 public class Produit {
 	
 	@Id
@@ -33,6 +40,7 @@ public class Produit {
 	@JoinTable(name = "produit_magasin",
 				joinColumns = @JoinColumn(name = "idProduit"),
 				inverseJoinColumns = @JoinColumn(name = "idMagasin"))
+//	@JsonIgnore
 	private List<Magasin> listeMagasin;
 
 }
