@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inti.model.Magasin;
@@ -53,7 +54,9 @@ public class MagasinController {
 	@DeleteMapping("delete/{id}")
 	public boolean deleteMagasin(@PathVariable int id)
 	{
-		if(id > 0)
+		int maxID = imr.findMaxId();
+		log.info("maxID : " + maxID);
+		if(id > 0 && id <= maxID)
 		{
 			log.info("Delete de l'objet magasin, id : " + id);
 			imr.deleteById(id);
@@ -141,6 +144,18 @@ public class MagasinController {
 	public Magasin getMagasinByNom(@PathVariable String nom)
 	{
 		return imr.findByNom(nom);
+	}
+	
+	@GetMapping("byCpAndVille")
+	public Magasin getMagasinByCpAndVille(@RequestParam(name = "cp") int cp, @RequestParam(name = "ville") String ville)
+	{
+		return imr.findByCpAndVille(cp, ville);
+	}
+	
+	@GetMapping("updateAdresseCp")
+	public void updateMagasinByAdresseAndCp(@RequestParam(name = "adresse") String adresse, @RequestParam(name = "cp") int cp, @RequestParam(name = "id") int id)
+	{
+		imr.updateAdresseAndCpById(adresse, cp, id);
 	}
 
 }
