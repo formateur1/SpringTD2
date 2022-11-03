@@ -12,27 +12,24 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Table(name = "ProduitSpring")
+@Table
 @Data @NoArgsConstructor @AllArgsConstructor
-public class Produit {
+public class Magasin {
 	
 	@Id
 	private int id;
 	private String nom;
-	private String reference;
-	private double prix;
-	private double poids;
+	private String adresse;
+	private int cp;
+	private String ville;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "produit_magasin",
-				joinColumns = @JoinColumn(name = "idProduit"),
-				inverseJoinColumns = @JoinColumn(name = "idMagasin"))
-	private List<Magasin> listeMagasin;
+				joinColumns = @JoinColumn(name = "idMagasin"),
+				inverseJoinColumns = @JoinColumn(name = "idProduit"))
+	private List<Produit> listeProduit;
 
 }
