@@ -34,4 +34,21 @@ pipeline {
             }
         }
     }
+    
+    post {
+        always {
+            echo "Le build a bien été lancé"   
+        }
+        
+        success {
+            echo "Les tests ont bien été validé, on peut déployer en production"   
+        }
+        
+        failure {
+            echo "Echec"
+            mail to: "enseignant.formateur@protonmail.com",
+                subject: "Echec pipeline : ${currentBuild.fullDisplayName}",
+                body: "Erreur dans le build : ${env.BUILD_URL}"
+        }
+    }
 }
