@@ -37,7 +37,7 @@ pipeline {
     
     post {
         always {
-            echo "Le build a bien été lancé"   
+            echo "Le build a bien été lancé depuis github"   
         }
         
         success {
